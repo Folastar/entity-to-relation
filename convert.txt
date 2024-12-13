@@ -1,0 +1,112 @@
+To convert the Entity-Relationship (ER) diagram you've shared into a **relational diagram** (also known as a **relational model** or **schema**), we need to follow these general steps:
+
+1. **Identify the entities and their attributes.**
+2. **Define the relationships and cardinalities.**
+3. **Convert the entities into tables (relations) and establish the relationships using foreign keys.**
+
+Let's break it down based on the ER diagram provided:
+
+---
+
+### **1. Entities and Attributes**:
+- **Hotel**
+  - Attributes: HotelID (Primary Key), Name, Address, PhoneNumber
+  
+- **Customer**
+  - Attributes: CustomerID (Primary Key), FirstName, LastName, Email, PhoneNumber
+  
+- **Room**
+  - Attributes: RoomID (Primary Key), RoomType, Price, HotelID (Foreign Key from Hotel)
+  
+- **Reservation**
+  - Attributes: ReservationID (Primary Key), CustomerID (Foreign Key from Customer), RoomID (Foreign Key from Room), CheckInDate, CheckOutDate
+  
+- **Payment**
+  - Attributes: PaymentID (Primary Key), ReservationID (Foreign Key from Reservation), PaymentDate, Amount
+  
+---
+
+### **2. Relationships and Cardinalities**:
+- **Hotel to Room**: A hotel can have many rooms (One-to-Many relationship between **Hotel** and **Room**).
+- **Customer to Reservation**: A customer can make many reservations (One-to-Many relationship between **Customer** and **Reservation**).
+- **Room to Reservation**: A room can be reserved many times (One-to-Many relationship between **Room** and **Reservation**).
+- **Reservation to Payment**: A reservation can have many payments (One-to-Many relationship between **Reservation** and **Payment**).
+
+### **3. Conversion to Relational Model**:
+Now, we will convert each of these entities and relationships into **tables** in the relational schema.
+
+---
+
+### **Relational Model (Tables)**:
+
+- **Hotel Table**:
+  - `HotelID` (Primary Key)
+  - `Name`
+  - `Address`
+  - `PhoneNumber`
+
+- **Customer Table**:
+  - `CustomerID` (Primary Key)
+  - `FirstName`
+  - `LastName`
+  - `Email`
+  - `PhoneNumber`
+
+- **Room Table**:
+  - `RoomID` (Primary Key)
+  - `RoomType`
+  - `Price`
+  - `HotelID` (Foreign Key referencing `HotelID` in Hotel Table)
+
+- **Reservation Table**:
+  - `ReservationID` (Primary Key)
+  - `CustomerID` (Foreign Key referencing `CustomerID` in Customer Table)
+  - `RoomID` (Foreign Key referencing `RoomID` in Room Table)
+  - `CheckInDate`
+  - `CheckOutDate`
+
+- **Payment Table**:
+  - `PaymentID` (Primary Key)
+  - `ReservationID` (Foreign Key referencing `ReservationID` in Reservation Table)
+  - `PaymentDate`
+  - `Amount`
+
+---
+
+### **Relational Diagram Representation**:
+
+```
++-------------------+         +--------------------+        +-----------------+
+|     Hotel         |  1 --- M|      Room          |  1 --- M|   Reservation   |
++-------------------+         +--------------------+        +-----------------+
+| HotelID (PK)      |         | RoomID (PK)        |        | ReservationID (PK)|
+| Name              |         | RoomType           |        | CustomerID (FK)   |
+| Address           |         | Price              |        | RoomID (FK)       |
+| PhoneNumber       |         | HotelID (FK)       |        | CheckInDate       |
++-------------------+         +--------------------+        | CheckOutDate      |
+                                                       +-----------------+        
+                                                            |       
+                                                            |        
+                                                            |       
+                                                   +------------------+
+                                                   |     Payment      |
+                                                   +------------------+
+                                                   | PaymentID (PK)   |
+                                                   | ReservationID (FK)|
+                                                   | PaymentDate       |
+                                                   | Amount            |
+                                                   +------------------+
+```
+
+### **Explanation**:
+1. **Hotel** has a **one-to-many** relationship with **Room**. Each hotel can have multiple rooms, but each room belongs to exactly one hotel. We represent this with a foreign key `HotelID` in the **Room** table.
+   
+2. **Customer** has a **one-to-many** relationship with **Reservation**. A customer can make many reservations, but each reservation is associated with one customer. We represent this by placing the foreign key `CustomerID` in the **Reservation** table.
+
+3. **Room** has a **one-to-many** relationship with **Reservation**. A room can be reserved by many customers over time, but each reservation corresponds to one specific room. The `RoomID` is placed in the **Reservation** table as a foreign key.
+
+4. **Reservation** has a **one-to-many** relationship with **Payment**. A reservation may be associated with multiple payments (e.g., for multiple installments), but each payment corresponds to one reservation. The `ReservationID` is placed in the **Payment** table as a foreign key.
+
+---
+
+This is a basic relational schema for the hotel management system based on the provided Entity-Relationship diagram. It ensures proper data integrity and supports all the necessary relationships for managing customers, rooms, reservations, and payments in a hotel.
